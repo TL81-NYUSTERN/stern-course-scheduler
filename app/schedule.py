@@ -15,8 +15,8 @@ soup = BeautifulSoup(html_content, "html.parser")
 
 class_list = soup.find(id="schedules-content")
 
-columns = [] # list for table column headings
-cells = [] # list for table rows data
+cells = [] # list to put in table rows data
+columns = []
 
 for each in class_list:
 
@@ -76,9 +76,35 @@ for each in class_list:
     #print(each.encode('utf-8'))
     print("-----end class-----")
 
-print(columns)
 print(cells)        
         
 df = pd.DataFrame(cells) # https://kite.com/python/answers/how-to-convert-a-list-of-lists-into-a-pandas-dataframe-in-python
-print(df)
-df.to_csv('file_name.csv')
+
+# Updating Dataframe 
+num_of_cols = len(df.columns)
+col_names_1 = ["Category","Course Code","Course Name"]
+
+col_names_2 = []
+for header in table_rows[0].findAll('th'):
+    col_names_2.append(header.get_text().strip())
+
+col_names_3 = []
+for i in range(1, num_of_cols - len(col_names_1) - len(col_names_2)): 
+    col_names_3.append("Specialization #" + str(i))
+
+full_col_names = col_names_1 + col_names_2 + col_names_3 + [""] # Combining all columns
+df.columns = full_col_names # Overwriting dataframe column headers with new names
+
+df.drop(df.columns[len(df.columns)-1], axis=1, inplace=True) # Deleting last column which is empty
+
+df[['Days','Times']] = df['MeetingTimes'].str.split(n=1, expand=True) # Splitting Meeting Times Column into Day and Time Columns
+df["Days"].fillna("N/A", inplace = True) # Replacing empty cells with N/A string
+df["Days"] = df["Days"].apply(lambda x: 'ALTERNATE SCHEDULE' if 'Alternate' in x else x) # Replacing cell value to make it look cleaner
+
+import re # importing regular expression
+df['Credits'] = [re.findall('\d*\.?\d+',s) for s in df['Course Name']]
+df['Credits'] = df['Credits'].apply(', '.join)
+#df['Credits'] = df['Credits'].apply(lambda x: [y for y in x])
+
+df.to_csv('file_name.csv', index=False)
+
