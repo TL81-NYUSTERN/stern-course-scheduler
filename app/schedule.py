@@ -5,7 +5,14 @@ import bs4 # needed for element type identification
 import requests
 import pandas as pd
 
-url="https://www.stern.nyu.edu/registrar/shim2.cgi?studtype=PT2&tm=2020F"
+semester = "F"
+academic_year = "2020"
+user_category = "All"
+user_specialization = "Management"
+num_credits = "3"
+
+
+url="https://www.stern.nyu.edu/registrar/shim2.cgi?studtype=PT2&tm=" + academic_year + semester
 
 # Make a GET request to fetch the raw HTML content
 html_content = requests.get(url).text
@@ -16,7 +23,6 @@ soup = BeautifulSoup(html_content, "html.parser")
 class_list = soup.find(id="schedules-content")
 
 cells = [] # list to put in table rows data
-columns = []
 
 for each in class_list:
 
@@ -50,15 +56,11 @@ for each in class_list:
             # https://srome.github.io/Parsing-HTML-Tables-in-Python-with-BeautifulSoup-and-pandas/
 
             table = each.find_all('table')[0]
-
-            table_cols = table.findAll('th')
-            #columns = []
-            for col in table_cols:
-                columns.append(col.get_text())          
-            
+              
             table_rows = table.findAll('tr')
-            print(table_rows)
-            #cells = []
+
+            #print(table_rows)
+
             for row in table_rows[1:]: # for loop, skips the first row (the headers) of the HTML table 
                 starting_row_count= len(row_data)
                 table_data = row.findAll('td')
@@ -66,6 +68,11 @@ for each in class_list:
                 for cell in table_data:
                     row_data.append(cell.get_text().strip())
 
+                combined_specs = []
+                for line in specs.splitlines()[2:-1]:
+                    combined_specs.append(line.strip())                
+                row_data.append(combined_specs) # adding combined list of specializations as a separate element
+                
                 for line in specs.splitlines()[2:]: # adding each specialization as a separate element to the row data list
                     row_data.append(line.strip())
 
@@ -76,7 +83,7 @@ for each in class_list:
     #print(each.encode('utf-8'))
     print("-----end class-----")
 
-print(cells)        
+#print(cells)        
         
 df = pd.DataFrame(cells) # https://kite.com/python/answers/how-to-convert-a-list-of-lists-into-a-pandas-dataframe-in-python
 
@@ -88,8 +95,8 @@ col_names_2 = []
 for header in table_rows[0].findAll('th'):
     col_names_2.append(header.get_text().strip())
 
-col_names_3 = []
-for i in range(1, num_of_cols - len(col_names_1) - len(col_names_2)): 
+col_names_3 = ["Specializations"]
+for i in range(1, num_of_cols - len(col_names_1) - len(col_names_2) -1): 
     col_names_3.append("Specialization #" + str(i))
 
 full_col_names = col_names_1 + col_names_2 + col_names_3 + [""] # Combining all columns
@@ -102,9 +109,24 @@ df["Days"].fillna("N/A", inplace = True) # Replacing empty cells with N/A string
 df["Days"] = df["Days"].apply(lambda x: 'ALTERNATE SCHEDULE' if 'Alternate' in x else x) # Replacing cell value to make it look cleaner
 
 import re # importing regular expression
-df['Credits'] = [re.findall('\d*\.?\d+',s) for s in df['Course Name']]
-df['Credits'] = df['Credits'].apply(', '.join)
-#df['Credits'] = df['Credits'].apply(lambda x: [y for y in x])
+df['Credits'] = [re.findall('\d*\.?\d+',s) for s in df['Course Name']] # Identifying number of credits
+df['Credits'] = df['Credits'].apply(', '.join) # Converting list to string
 
-df.to_csv('file_name.csv', index=False)
+df.to_csv('file_name.csv', index=False) # Write to CSV file
+
+# Filtering Dataframe
+filtered_df = df
+
+if user_category != "All":
+    filtered_df = df.loc[df['Category'].isin(user_category.split())] # Filtering for Category
+print(filtered_df)
+
+if user_specialization != "All":
+    selection = user_specialization.split()
+    mask = filtered_df.Specializations.apply(lambda x: any(item for item in selection if item in x)) # Filtering for Specialization
+    filtered_df = df[mask] # https://stackoverflow.com/questions/53342715/pandas-dataframe-select-rows-where-a-list-column-contains-any-of-a-list-of-strin
+print(filtered_df)
+
+filtered_df = filtered_df.loc[filtered_df['Credits'].isin(num_credits.split())] # Filtering for Number of Credits
+print(filtered_df)
 

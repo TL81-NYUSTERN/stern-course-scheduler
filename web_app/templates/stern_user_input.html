@@ -1,0 +1,87 @@
+{% extends "bootstrap_layout.html" %}
+{% set active_page = "sternuserinput" %}
+
+{% block content %}
+
+    <h2>NYU Stern Langone Part-Time Program</h2>
+    <h2>Course Schedule Search Tool</h2>
+
+
+    <p><br>Please use the form below to specify search criteria...<br><br></p>
+    
+
+    <form action="/stern_user_output" method="POST">
+
+        <label for="semester">Select the Semester:</label>
+        <select name="semester" id="semester">
+          <option value="F" selected>Fall</option>
+          <option value="S">Spring</option>
+          <option value="Su">Summer</option>
+        </select>
+        <br>
+
+        <label for="academic_year">Select the Academic Year:</label>
+        <select name="academic_year" id="academic_year">
+          <option value="2019">2019</option>
+          <option value="2020" selected>2020</option>
+          <option value="2021">2021</option>
+        </select>
+        <br>
+
+        <label for="user_category">Select the Category:</label>
+        <select name="user_category" id="user_category">
+          <option value="All" selected>All</option>
+          <option value="Accounting, Taxation and Business Law">Accounting, Taxation and Business Law</option>
+          <option value="Business and Society">Business and Society</option>
+          <option value="Core Courses">Core Courses</option>
+          <option value="Economics">Economics</option>
+          <option value="Finance">Finance</option>
+          <option value="Global Trip">Global Trip</option>
+          <option value="Inter-Area">Inter-Area</option>
+          <option value="Management Communication">Management Communication</option>
+          <option value="Management and Organizational Behavior">Management and Organizational Behavior</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Non-Credit Courses">Non-Credit Courses</option>
+          <option value="Operations Management">Operations Management</option>
+          <option value="Professional Responsibility">Professional Responsibility</option>
+          <option value="Statistics and Operations Research">Statistics and Operations Research</option>
+          <option value="Technology">Technology</option>
+        </select>
+        <br>
+
+        <label for="specialization">Select the Specialization:</label>
+        <select name="specialization" id="specialization">
+          <option value="All" selected>All</option>
+          <option value="Accounting" selected>Accounting</option>
+          <option value="Banking">Banking</option>
+          <option value="Business Analytics">Business Analytics</option>
+          <option value="Corporate Finance">Corporate Finance</option>
+          <option value="Digital Marketing">Digital Marketing</option>
+          <option value="Economics">Economics</option>
+          <option value="Entertainment, Media & Technology">Entertainment, Media & Technology</option>
+          <option value="Entrepreneurship and Innovation">Entrepreneurship and Innovation</option>
+          <option value="Finance">Finance</option>
+          <option value="Financial Instruments & Markets">Financial Instruments & Markets</option>
+          <option value="FinTech">FinTech</option>
+          <option value="Global Business">Global Business</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Law & Business">Law & Business</option>
+          <option value="Leadership and Change Management">Leadership and Change Management</option>
+          <option value="Luxury Marketing">Luxury Marketing</option>
+          <option value="Management">Management</option>
+          <option value="Management of Technology & Operations">Management of Technology & Operations</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Product Management">Product Management</option>
+          <option value="Quantitative Finance">Quantitative Finance</option>
+          <option value="Real Estate">Real Estate</option>
+          <option value="Strategy">Strategy</option>
+          <option value="Supply Chain Management & Global Sourcing">Supply Chain Management & Global Sourcing</option>
+          <option value="Sustainable Business and Innovation">Sustainable Business and Innovation</option>
+        </select>
+        <br>
+        
+
+        <button>Submit</button>
+    </form>
+
+{% endblock %}
