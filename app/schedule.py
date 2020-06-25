@@ -4,12 +4,14 @@ from bs4 import BeautifulSoup
 import bs4 # needed for element type identification
 import requests
 import pandas as pd
+import re # importing regular expression
 
-semester = "F"
-academic_year = "2020"
-user_category = "All"
-user_specialization = "Management"
-num_credits = "3"
+SEMESTER = "F"
+ACADEMIC_YEAR = "2020"
+USER_CATEGORY = "All"
+USER_SPECIALIZATION = "Banking"
+NUM_CREDITS = "3"
+USER_DAYS = "R"
 
 
 url="https://www.stern.nyu.edu/registrar/shim2.cgi?studtype=PT2&tm=" + academic_year + semester
@@ -87,7 +89,7 @@ for each in class_list:
         
 df = pd.DataFrame(cells) # https://kite.com/python/answers/how-to-convert-a-list-of-lists-into-a-pandas-dataframe-in-python
 
-# Updating Dataframe 
+### UPDATING DATAFRAME STRUCTURE
 num_of_cols = len(df.columns)
 col_names_1 = ["Category","Course Code","Course Name"]
 
@@ -108,13 +110,13 @@ df[['Days','Times']] = df['MeetingTimes'].str.split(n=1, expand=True) # Splittin
 df["Days"].fillna("N/A", inplace = True) # Replacing empty cells with N/A string
 df["Days"] = df["Days"].apply(lambda x: 'ALTERNATE SCHEDULE' if 'Alternate' in x else x) # Replacing cell value to make it look cleaner
 
-import re # importing regular expression
+
 df['Credits'] = [re.findall('\d*\.?\d+',s) for s in df['Course Name']] # Identifying number of credits
 df['Credits'] = df['Credits'].apply(', '.join) # Converting list to string
 
 df.to_csv('file_name.csv', index=False) # Write to CSV file
 
-# Filtering Dataframe
+### FILTERING DATAFRAME
 filtered_df = df
 
 if user_category != "All":
@@ -130,3 +132,8 @@ print(filtered_df)
 filtered_df = filtered_df.loc[filtered_df['Credits'].isin(num_credits.split())] # Filtering for Number of Credits
 print(filtered_df)
 
+if user_days != "All"
+    filtered_df = filtered_df[filtered_df['MeetingTimes'].str.contains(user_days, na=False)]
+print(filtered_df)
+
+filtered_df.to_csv('file_name_filtered.csv', index=False) # Write to CSV file

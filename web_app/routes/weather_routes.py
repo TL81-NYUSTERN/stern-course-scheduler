@@ -42,8 +42,10 @@ def user_output_results():
         academic_year = request.form["academic_year"]
         user_category = request.form["user_category"]
         specialization = request.form["specialization"]
+        credits = request.form["credits"]
+        days = request.form["days"]
         print(user_category)
     elif request.method == "GET":
         print("URL PARAMS:", dict(request.args))
         user_category = request.args["user_category"] #> {'zip_code': '20057'}
-    return render_template("stern_user_output.html", semester=semester, academic_year=academic_year, user_category=user_category, specialization=specialization)
+    return render_template("stern_user_output.html", semester=semester, academic_year=academic_year,user_category=user_category, specialization=specialization, credits=credits, days=days)
