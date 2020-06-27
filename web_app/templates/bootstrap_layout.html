@@ -26,8 +26,6 @@
     <!-- see: https://jinja.palletsprojects.com/en/2.11.x/tricks/ -->
     <!-- see: https://getbootstrap.com/docs/4.0/components/navbar/ -->
     {% set nav_links = [
-      ('/about', 'about', 'About'),
-      ('/register', 'new_user', 'Sign Up')
     ] -%}
     {% set active_page = active_page|default('index') -%}
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -62,7 +60,7 @@
       <!-- FOOTER -->
       <div id="footer">
         <hr>
-        &copy; Copyright 2020 [Your Name Here] |
+        &copy; Copyright 2020 Thomson Lai |
         <a href="https://github.com/prof-rossetti/daily-briefings-py">source</a>
       </div>
     </div>

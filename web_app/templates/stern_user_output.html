@@ -4,12 +4,14 @@
 
     <h2>List of Courses for Following Criteria</h2>
 
-    <p>Semester: <b>{{ semester }}</b> <i>(F = Fall, S = Spring, U = Summer)</i></p>
-    <p>Year: <b>{{ academic_year }}</b></p>
-    <p>Category: <b>{{ user_category }}</b></p>
-    <p>Specialization: <b>{{ specialization }}</b></p>
-    <p>Credits: <b>{{ credits }}</b></p>
-    <p>Days: <b>{{ days }}</b></p>
+    <p>Semester: <b>{{ semester }}</b> <i>(F = Fall, S = Spring, U = Summer)</i>
+    <br>Year: <b>{{ academic_year }}</b>
+    <br>Category: <b>{{ user_category }}</b>
+    <br>Specialization: <b>{{ specialization }}</b>
+    <br>Credits: <b>{{ credits }}</b>
+    <br>Days: <b>{{ days }}</b></p>
+    
+    <p style="color:red;">There are <b>{{ results_count }}</b> courses that meet your criteria.</p>
 
     <h1>{{name}}</h1>
     {{data | safe}}

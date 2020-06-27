@@ -2,6 +2,7 @@ requests
 beautifulsoup4
 pandas
 flask
+gunicorn
 
 
 python-dotenv

@@ -8,10 +8,10 @@ import re # importing regular expression
 
 SEMESTER = "F"
 ACADEMIC_YEAR = "2020"
-USER_CATEGORY = "Finance"
-USER_SPECIALIZATION = "Accounting"
-NUM_CREDITS = "All"
-USER_DAYS = "All"
+USER_CATEGORY = "Management and Organizational Behavior"
+USER_SPECIALIZATION = "All"
+NUM_CREDITS = "1.5"
+USER_DAYS = "M|T|W|R|F"
 
 
 def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_category=USER_CATEGORY, user_specialization=USER_SPECIALIZATION, num_credits=NUM_CREDITS, user_days=USER_DAYS):
@@ -77,8 +77,8 @@ def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_categor
                         combined_specs.append(line.strip())                
                     row_data.append(combined_specs) # adding combined list of specializations as a separate element
                     
-                    for line in specs.splitlines()[2:]: # adding each specialization as a separate element to the row data list
-                        row_data.append(line.strip())
+                    #####for line in specs.splitlines()[2:]: # adding each specialization as a separate element to the row data list
+                    #####    row_data.append(line.strip())
 
                     cells.append(row_data)
                     row_data = row_data[0:starting_row_count] # resets the row list back to include only category, name, and code
@@ -100,29 +100,29 @@ def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_categor
         col_names_2.append(header.get_text().strip())
 
     col_names_3 = ["Specializations"]
-    for i in range(1, num_of_cols - len(col_names_1) - len(col_names_2) -1): 
-        col_names_3.append("Specialization #" + str(i))
+    #####for i in range(1, num_of_cols - len(col_names_1) - len(col_names_2) -1): 
+    #####    col_names_3.append("Specialization #" + str(i))
 
-    full_col_names = col_names_1 + col_names_2 + col_names_3 + [""] # Combining all columns
+    full_col_names = col_names_1 + col_names_2 + col_names_3 # Combining all columns
     df.columns = full_col_names # Overwriting dataframe column headers with new names
 
-    df.drop(df.columns[len(df.columns)-1], axis=1, inplace=True) # Deleting last column which is empty
+    #####df.drop(df.columns[len(df.columns)-1], axis=1, inplace=True) # Deleting last column which is empty
 
-    df[['Days','Times']] = df['MeetingTimes'].str.split(n=1, expand=True) # Splitting Meeting Times Column into Day and Time Columns
-    df["Days"].fillna("N/A", inplace = True) # Replacing empty cells with N/A string
-    df["Days"] = df["Days"].apply(lambda x: 'ALTERNATE SCHEDULE' if 'Alternate' in x else x) # Replacing cell value to make it look cleaner
+    #####df[['Days','Times']] = df['MeetingTimes'].str.split(n=1, expand=True) # Splitting Meeting Times Column into Day and Time Columns
+    #####df["Days"].fillna("N/A", inplace = True) # Replacing empty cells with N/A string
+    #####df["Days"] = df["Days"].apply(lambda x: 'ALTERNATE SCHEDULE' if 'Alternate' in x else x) # Replacing cell value to make it look cleaner
 
 
     df['Credits'] = [re.findall('\d*\.?\d+',s) for s in df['Course Name']] # Identifying number of credits
     df['Credits'] = df['Credits'].apply(', '.join) # Converting list to string
 
-    df.to_csv('file_name.csv', index=False) # Write to CSV file
+   #####df.to_csv('file_name.csv', index=False) # Write to CSV file
 
     ### FILTERING DATAFRAME
     filtered_df = df
 
     if user_category != "All":
-        filtered_df = df.loc[df['Category'].isin(user_category.split())] # Filtering for Category
+        filtered_df = df.loc[df['Category'].isin([user_category])] # Filtering for Category
     #print(filtered_df)
 
     if user_specialization != "All":
@@ -139,12 +139,9 @@ def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_categor
         filtered_df = filtered_df[filtered_df['MeetingTimes'].str.contains(user_days, na=False)] # Filtering for Class Days
     #print(filtered_df)
 
-    filtered_df = filtered_df.reset_index(drop=True)
-    filtered_df.to_csv('file_name_filtered.csv', index=False) # Write to CSV file
+    filtered_df = filtered_df.reset_index(drop=True) # Resetting index
 
-
-
-    #print(filtered_df)
+    #####filtered_df.to_csv('file_name_filtered.csv', index=False) # Write to CSV file
 
     return filtered_df
 
