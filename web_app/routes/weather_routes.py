@@ -4,6 +4,8 @@ from flask import Blueprint, render_template, request
 
 from app.weather_service import get_hourly_forecasts
 
+from app.schedule import schedule_filter
+
 weather_routes = Blueprint("weather_routes", __name__)
 
 @weather_routes.route("/weather/form")
@@ -38,14 +40,20 @@ def user_output_results():
 
     if request.method == "POST":
         print("FORM DATA:", dict(request.form)) #> {'zip_code': '20057'}
-        semester = request.form["semester"]
-        academic_year = request.form["academic_year"]
-        user_category = request.form["user_category"]
-        specialization = request.form["specialization"]
-        credits = request.form["credits"]
-        days = request.form["days"]
-        print(user_category)
+        SEMESTER = str(request.form["semester"])
+        ACADEMIC_YEAR = str(request.form["academic_year"])
+        USER_CATEGORY = str(request.form["user_category"])
+        USER_SPECIALIZATION = str(request.form["specialization"])
+        NUM_CREDITS = str(request.form["credits"])
+        USER_DAYS = str(request.form["days"])
+
+        filtered_df = schedule_filter(SEMESTER, ACADEMIC_YEAR, USER_CATEGORY, USER_SPECIALIZATION, NUM_CREDITS, USER_DAYS)
+        print(filtered_df)
+
+        html = filtered_df.to_html() # to create HTML table on output page
+
     elif request.method == "GET":
         print("URL PARAMS:", dict(request.args))
-        user_category = request.args["user_category"] #> {'zip_code': '20057'}
-    return render_template("stern_user_output.html", semester=semester, academic_year=academic_year,user_category=user_category, specialization=specialization, credits=credits, days=days)
+        USER_CATEGORY = request.args["user_category"] #> {'zip_code': '20057'}
+
+    return render_template("stern_user_output.html", semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_category=USER_CATEGORY, specialization=USER_SPECIALIZATION, credits=NUM_CREDITS, days=USER_DAYS, data=html)

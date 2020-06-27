@@ -4,12 +4,16 @@
 
     <h2>List of Courses for Following Criteria</h2>
 
-    <p>Semester: {{ semester }}</p>
-    <p>Year: {{ academic_year }}</p>
-    <p>Category: {{ user_category }}</p>
-    <p>Specialization: {{ specialization }}</p>
-    <p>Credits: {{ credits }}</p>
-    <p>Days: {{ days }}</p>
+    <p>Semester: <b>{{ semester }}</b> <i>(F = Fall, S = Spring, U = Summer)</i></p>
+    <p>Year: <b>{{ academic_year }}</b></p>
+    <p>Category: <b>{{ user_category }}</b></p>
+    <p>Specialization: <b>{{ specialization }}</b></p>
+    <p>Credits: <b>{{ credits }}</b></p>
+    <p>Days: <b>{{ days }}</b></p>
+
+    <h1>{{name}}</h1>
+    {{data | safe}}
+  
 
     <!-- TODO: consider using a table instead of a list -->
     <!-- https://www.w3schools.com/html/html_tables.asp -->

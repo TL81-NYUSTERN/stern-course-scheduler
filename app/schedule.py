@@ -8,10 +8,10 @@ import re # importing regular expression
 
 SEMESTER = "F"
 ACADEMIC_YEAR = "2020"
-USER_CATEGORY = "All"
-USER_SPECIALIZATION = "Banking"
-NUM_CREDITS = "3"
-USER_DAYS = "R"
+USER_CATEGORY = "Finance"
+USER_SPECIALIZATION = "Accounting"
+NUM_CREDITS = "All"
+USER_DAYS = "All"
 
 
 def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_category=USER_CATEGORY, user_specialization=USER_SPECIALIZATION, num_credits=NUM_CREDITS, user_days=USER_DAYS):
@@ -30,7 +30,7 @@ def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_categor
 
     for each in class_list:
 
-        print("-----start class-----") 
+        #print("-----start class-----") 
 
         if isinstance(each, bs4.element.Tag):
 
@@ -38,7 +38,7 @@ def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_categor
 
             if each.find('a') is None:
                 category = each.get_text() # course category e.g. Core Courses
-                print(category)
+                #print(category)
 
             else:
                 row_data = []
@@ -85,7 +85,7 @@ def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_categor
 
 
         #print(each.encode('utf-8'))
-        print("-----end class-----")
+        #print("-----end class-----")
 
     #print(cells)        
             
@@ -123,25 +123,31 @@ def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_categor
 
     if user_category != "All":
         filtered_df = df.loc[df['Category'].isin(user_category.split())] # Filtering for Category
-    print(filtered_df)
+    #print(filtered_df)
 
     if user_specialization != "All":
-        selection = user_specialization.split()
+        selection = [user_specialization] # Changing string to list
         mask = filtered_df.Specializations.apply(lambda x: any(item for item in selection if item in x)) # Filtering for Specialization
-        filtered_df = df[mask] # https://stackoverflow.com/questions/53342715/pandas-dataframe-select-rows-where-a-list-column-contains-any-of-a-list-of-strin
-    print(filtered_df)
+        filtered_df = filtered_df[mask] # https://stackoverflow.com/questions/53342715/pandas-dataframe-select-rows-where-a-list-column-contains-any-of-a-list-of-strin
+    #print(filtered_df)
 
-    filtered_df = filtered_df.loc[filtered_df['Credits'].isin(num_credits.split())] # Filtering for Number of Credits
-    print(filtered_df)
+    if num_credits != "All":
+        filtered_df = filtered_df.loc[filtered_df['Credits'].isin(num_credits.split())] # Filtering for Number of Credits
+    #print(filtered_df)
 
     if user_days != "All":
         filtered_df = filtered_df[filtered_df['MeetingTimes'].str.contains(user_days, na=False)] # Filtering for Class Days
-    print(filtered_df)
+    #print(filtered_df)
 
+    filtered_df = filtered_df.reset_index(drop=True)
     filtered_df.to_csv('file_name_filtered.csv', index=False) # Write to CSV file
+
+
+
+    #print(filtered_df)
 
     return filtered_df
 
-filtered_df = schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_category=USER_CATEGORY, user_specialization=USER_SPECIALIZATION, num_credits=NUM_CREDITS, user_days=USER_DAYS)
+#filtered_df = schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_category=USER_CATEGORY, user_specialization=USER_SPECIALIZATION, num_credits=NUM_CREDITS, user_days=USER_DAYS)
 
-print(filtered_df)
+#print(filtered_df)

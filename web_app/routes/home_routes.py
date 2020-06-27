@@ -5,10 +5,9 @@ from flask import Blueprint, render_template, redirect, request, flash
 home_routes = Blueprint("home_routes", __name__)
 
 @home_routes.route("/")
-def index():
-    print("VISITED THE HOME PAGE")
-    #return "Welcome Home (TODO)"
-    return render_template("home.html")
+def user_input_form():
+    print("VISITED THE STERN USER INPUT FORM...")
+    return render_template("stern_user_input.html")
 
 @home_routes.route("/about")
 def about():
