@@ -6,6 +6,7 @@ import requests
 import pandas as pd
 import re # importing regular expression
 
+# Below are default values for the variables; users will get to specify their own values through the webpage
 SEMESTER = "F"
 ACADEMIC_YEAR = "2020"
 USER_CATEGORY = "Management and Organizational Behavior"
@@ -24,7 +25,7 @@ def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_categor
     # Parse the html content
     soup = BeautifulSoup(html_content, "html.parser")
 
-    class_list = soup.find(id="schedules-content")
+    class_list = soup.find(id="schedules-content") # identifies the HTML section that contains all the course data
 
     cells = [] # list to put in table rows data
 
@@ -70,7 +71,7 @@ def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_categor
                     table_data = row.findAll('td')
                     
                     for cell in table_data:
-                        row_data.append(cell.get_text().strip())
+                        row_data.append(cell.get_text().strip()) # adding each column's data to the row data list
 
                     combined_specs = []
                     for line in specs.splitlines()[2:-1]:
@@ -112,8 +113,7 @@ def schedule_filter(semester=SEMESTER, academic_year=ACADEMIC_YEAR, user_categor
     #####df["Days"].fillna("N/A", inplace = True) # Replacing empty cells with N/A string
     #####df["Days"] = df["Days"].apply(lambda x: 'ALTERNATE SCHEDULE' if 'Alternate' in x else x) # Replacing cell value to make it look cleaner
 
-
-    df['Credits'] = [re.findall('\d*\.?\d+',s) for s in df['Course Name']] # Identifying number of credits
+    df['Credits'] = [re.findall('\d*\.?\d+',s) for s in df['Course Name']] # Identifying number of credits and adding as new column to dataframe
     df['Credits'] = df['Credits'].apply(', '.join) # Converting list to string
 
    #####df.to_csv('file_name.csv', index=False) # Write to CSV file

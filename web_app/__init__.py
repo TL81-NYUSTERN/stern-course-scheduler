@@ -4,7 +4,6 @@ import os
 from dotenv import load_dotenv
 from flask import Flask
 
-from web_app.routes.home_routes import home_routes
 from web_app.routes.schedule_routes import schedule_routes
 
 load_dotenv()
@@ -15,7 +14,6 @@ def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = SECRET_KEY
 
-    app.register_blueprint(home_routes)
     app.register_blueprint(schedule_routes)
 
     return app

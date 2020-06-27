@@ -7,12 +7,13 @@
     <h2 style="color:purple;">Course Schedule Search Tool</h2>
 
 
-    <p><br>Please use the form below to specify search criteria...<br><br></p>
+    <p><br>Please use the form below to specify search criteria...
+      <br><b>After pressing SUBMIT, it will take a few seconds (15-30 secs) to prepare the results.</b><br><br></p>
     
 
     <form action="/stern_user_output" method="POST">
 
-        <label for="semester">Select the Semester:</label>
+        <label for="semester">Select the <u>Semester</u>:</label>
         <select name="semester" id="semester">
           <option value="F" selected>Fall</option>
           <option value="S">Spring</option>
@@ -20,7 +21,7 @@
         </select>
         <br>
 
-        <label for="academic_year">Select the Academic Year:</label>
+        <label for="academic_year">Select the <u>Academic Year</u>:</label>
         <select name="academic_year" id="academic_year">
           <option value="2019">2019</option>
           <option value="2020" selected>2020</option>
@@ -28,7 +29,7 @@
         </select>
         <br>
 
-        <label for="user_category">Select the Category:</label>
+        <label for="user_category">Select the <u>Category</u>:</label>
         <select name="user_category" id="user_category">
           <option value="All" selected>All</option>
           <option value="Accounting, Taxation and Business Law">Accounting, Taxation and Business Law</option>
@@ -49,7 +50,7 @@
         </select>
         <br>
 
-        <label for="specialization">Select the Specialization:</label>
+        <label for="specialization">Select the <u>Specialization</u>:</label>
         <select name="specialization" id="specialization">
           <option value="All" selected>All</option>
           <option value="Accounting">Accounting</option>
@@ -80,7 +81,7 @@
         </select>
         <br>
         
-        <label for="credits">Select the Number of Credits Per Course:</label>
+        <label for="credits">Select the <u>Number of Credits Per Course</u>:</label>
         <select name="credits" id="credits">
           <option value="All" selected>All</option>
           <option value="1.5">1.5</option>
@@ -88,7 +89,7 @@
         </select>
         <br>
 
-        <label for="days">Select the Days:</label>
+        <label for="days">Select the <u>Days</u>:</label>
         <select name="days" id="days">
           <option value="All" selected>All</option>
           <option value="M|T|W|R|F">Weekdays</option>
