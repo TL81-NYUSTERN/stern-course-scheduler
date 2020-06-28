@@ -6,6 +6,12 @@ from app.schedule import schedule_filter
 
 schedule_routes = Blueprint("schedule_routes", __name__)
 
+@schedule_routes.route("/")
+def index():
+    print("VISITED THE HOME PAGE")
+    #return "Welcome Home (TODO)"
+    return render_template("stern_user_input.html")
+
 @schedule_routes.route("/stern_user_input")
 def user_input_form():
     print("VISITED THE STERN USER INPUT FORM...")
@@ -25,7 +31,7 @@ def user_output_results():
         NUM_CREDITS = str(request.form["credits"])
         USER_DAYS = str(request.form["days"])
 
-        filtered_df = schedule_filter(SEMESTER, ACADEMIC_YEAR, USER_CATEGORY, USER_SPECIALIZATION, NUM_CREDITS, USER_DAYS)
+        filtered_df = schedule_filter(SEMESTER, ACADEMIC_YEAR, USER_CATEGORY, USER_SPECIALIZATION, NUM_CREDITS, USER_DAYS) # running custom function found in "schedule.py" file
         #print(filtered_df)
 
         RESULTS_COUNT = len(filtered_df)
